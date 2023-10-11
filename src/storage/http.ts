@@ -31,10 +31,8 @@ export function ipxHttpStorage(_options: HTTPStorageOptions = {}): IPXStorage {
         if (!HTTP_RE.test(d)) {
           d = "http://" + d;
         }
-        const { hostname } = new URL(d);
-        const regExpUrl = `${hostname}`.replaceAll("*.", "(\\w*.)?");
+        const regExpUrl = d.replaceAll("*.", "(\\w*.)?");
         return new RegExp(regExpUrl);
-        // return new URL(d).hostname;
       })
       .filter(Boolean),
   );
