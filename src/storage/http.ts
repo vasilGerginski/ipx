@@ -31,10 +31,20 @@ export function ipxHttpStorage(_options: HTTPStorageOptions = {}): IPXStorage {
         if (!HTTP_RE.test(d)) {
           d = "http://" + d;
         }
-        return new URL(d).hostname;
+        const { hostname } = new URL(d);
+        const regExpUrl = `${hostname}`.replaceAll("*.", "(\\w*.)?");
+        return new RegExp(regExpUrl);
+        // return new URL(d).hostname;
       })
       .filter(Boolean),
   );
+
+  function validateDomain(requestUrl: string): boolean {
+    for (const domain of domains) {
+      return domain.test(requestUrl)
+    }
+    return false;
+  };
 
   // eslint-disable-next-line unicorn/consistent-function-scoping
   function validateId(id: string) {
@@ -46,7 +56,7 @@ export function ipxHttpStorage(_options: HTTPStorageOptions = {}): IPXStorage {
         message: `Hostname is missing: ${id}`,
       });
     }
-    if (!allowAllDomains && !domains.has(url.hostname)) {
+    if (!allowAllDomains && !validateDomain(url.hostname) ) {
       throw createError({
         statusCode: 403,
         statusText: `IPX_FORBIDDEN_HOST`,
