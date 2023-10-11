@@ -38,6 +38,7 @@ export function ipxHttpStorage(_options: HTTPStorageOptions = {}): IPXStorage {
   );
 
   function validateDomain(requestUrl: string): boolean {
+    console.log(domains, requestUrl)
     for (const domain of domains) {
       return domain.test(requestUrl)
     }
