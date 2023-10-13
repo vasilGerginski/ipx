@@ -34,6 +34,7 @@ export function ipxHttpStorage(_options: HTTPStorageOptions = {}): IPXStorage {
         const { hostname } = new URL(d);
         const regExpUrl = hostname.replaceAll("*.", "(\\w*.)?");
 
+
         return new RegExp(regExpUrl);
       })
       .filter(Boolean),
@@ -41,6 +42,7 @@ export function ipxHttpStorage(_options: HTTPStorageOptions = {}): IPXStorage {
 
   function validateDomain(requestUrl: string): boolean {
     for (const domain of domains) {
+      console.log(requestUrl)
       return domain.test(requestUrl)
     }
     return false;
