@@ -41,12 +41,15 @@ export function ipxHttpStorage(_options: HTTPStorageOptions = {}): IPXStorage {
   );
 
   function validateDomain(requestUrl: string): boolean {
+    console.log(requestUrl);
     for (const domain of domains) {
-      console.log(requestUrl)
-      return domain.test(requestUrl)
+
+      if (domain.test(requestUrl)) {
+        return true;
+      }
     }
     return false;
-  };
+  }
 
   // eslint-disable-next-line unicorn/consistent-function-scoping
   function validateId(id: string) {
@@ -58,6 +61,9 @@ export function ipxHttpStorage(_options: HTTPStorageOptions = {}): IPXStorage {
         message: `Hostname is missing: ${id}`,
       });
     }
+
+    console.log(getEnv<string | string[]>("IPX_HTTP_DOMAINS"))
+    console.log(`${url.hostname}${url.pathname}`)
     if (!allowAllDomains && !validateDomain(`${url.hostname}${url.pathname}`) ) {
       throw createError({
         statusCode: 403,
